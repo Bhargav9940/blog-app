@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Add a blog</title>
+</head>
+<body>
+    <!-- The attribute enctype="multipart/form-data" is used in HTML forms when you need to upload files (e.g., images, documents) to the server. -->
+    <%- include("./partials/nav") %>
+    <div class="container mt-3">
+        <form action="/blog" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="coverImage" class="form-label">Cover image</label>
+                <input type="file" name="coverImage" class="form-control" id="coverImage" aria-describedby="coverImage">
+            </div>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="title" aria-describedby="title">
+            </div>
+            <div class="mb-3">
+                <label for="body">Body</label>
+                <textarea name= "body" class="form-control" id="body" style="height: 100px"></textarea>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+            
+        </form>
+    </div>
+    <%- include("./partials/scripts") %>
+</body>
+</html>

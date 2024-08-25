@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/head") %>
+    <title>Profile Page</title>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    <div class="container">
+      <form id="img-form" method="POST" action="?/user/profile">
+        <p class="fs-2 mt-2 mb-0">Update Profile</p>
+        <label for="profile-img" style="cursor: pointer">
+          <img
+            src="<%= locals.url %>"
+            class="rounded mx-auto d-block mt-4"
+            alt="profile-img"
+            width="230rem"
+          />
+        </label>
+        <input type="file" accept="image/*" id="profile-img" hidden="true" />
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="fullName"
+            value="<%= user.fullName %>"
+            id="fullName"
+            aria-describedby="fullName"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            name="email"
+            value="<%= user.email %>"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+          />
+          <div id="emailHelp" class="form-text">
+            We'll never share your email with anyone else.
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary" type="submit">submit</button>
+        </div>
+      </form>
+    </div>
+
+    <%- include("./partials/scripts") %>
+    <script>
+      const fileInput = document.getElementById("profile-img");
+      const form = document.getElementById("img-form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const file = fileInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          //convert from img to base64
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            const base64 = reader.result;
+
+            fetch("/user/profile", {
+              method: "POST",
+              headers: { "Content-type": "application/json" },
+              body: JSON.stringify({ image: base64, fullName: form.fullName.value, email: form.email.value}),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                window.location.reload();
+              })
+              .catch((err) => console.error("Error:", err));
+          };
+        }
+        else {
+          fetch("/user/profile", {
+              method: "POST",
+              headers: { "Content-type": "application/json" },
+              body: JSON.stringify({fullName: form.fullName.value, email: form.email.value}),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                window.location.reload();
+              })
+              .catch((err) => console.error("Error:", err));
+        }
+      });
+    </script>
+  </body>
+</html>
