@@ -15,8 +15,10 @@
 
     async function loadImg(res, imgName) {
         const file = await gfs.find({ filename:imgName }).toArray();
-        const readstream = gfs.openDownloadStreamByName(file[0].filename)
-        readstream.pipe(res);
+        if(file) {
+            const readstream = gfs.openDownloadStreamByName(file[0].filename)
+            readstream.pipe(res);
+        }
     }
 
     module.exports = {

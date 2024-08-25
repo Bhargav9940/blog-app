@@ -1,5 +1,6 @@
 const JWT = require("jsonwebtoken");
-const secret = "lokopilot";
+require("dotenv").config();
+const secret = process.env.SECRET_KEY;
 
 function createToken(user) {
     const payload = {
